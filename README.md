@@ -24,7 +24,9 @@ git clone https://github.com/eliird/chin-chime
 pip install -e .
 
 # edit the chin-chime/consants.py to update the path of the model weights
- MODEL_PATH # mediapipe model path can be found in `model_weights/face_landmarker`
+ >MODEL_PATH # mediapipe model path can be found in `model_weights/face_landmarker`
  
+ >LANDMARK_LOWER_MODEL_PATH # path of the trained model
+
 ```
 
