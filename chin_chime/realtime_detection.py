@@ -30,7 +30,11 @@ model.to(DEVICE)
 
 
 def run_emotion_detction(image:ndarray) -> dict:
-    landmarks = torch.tensor(get_landmarks(image), dtype=torch.float32)
+    landmarks = get_landmarks(image)
+    if landmarks in None:
+        return None
+    
+    landmarks = torch.tensor(landmarks, dtype=torch.float32)
     lower_landmarks = landmarks[LOWER_FACE_LANDMARKS]
     lower_landmarks = lower_landmarks.unsqueeze(0).to(DEVICE)
     
