@@ -37,20 +37,32 @@ def main():
         
         emotion = run_emotion_detction(frame)
         
+        prediction = max(emotion, key=emotion.get)
+        
         if emotion is not None:
             # Position for the text
             x, y = frame.shape[1] - 250, 20  # Starting position on the top right
 
             # Write each line on the frame
-            for i, (emotion, probs) in enumerate(emotion.items()):
+            for i, (emo, probs) in enumerate(emotion.items()):
                 cv2.putText(
                     frame, 
-                    f'{emotion}: {probs}', 
+                    f'{emo}: {probs}', 
                     (x, y + i * 30), 
                     font, 
                     fontScale=fontScale, 
                     color=color, 
                     thickness=thickness
+                )
+                
+            cv2.putText(
+                    frame, 
+                    f'{prediction}: {emotion[prediction]}', 
+                    (x, y + (i+1) * 30), 
+                    font, 
+                    fontScale=fontScale, 
+                    color=color, 
+                    thickness=thickness+1
                 )
             
         cv2.imshow("Camera Feed", frame)
