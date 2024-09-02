@@ -1,0 +1,10 @@
+README.md
+setup.py
+chin_chime/__init__.py
+chin_chime/constants.py
+chin_chime/face_landmark_extractor.py
+chin_chime/model.py
+chin_chime.egg-info/PKG-INFO
+chin_chime.egg-info/SOURCES.txt
+chin_chime.egg-info/dependency_links.txt
+chin_chime.egg-info/top_level.txt
