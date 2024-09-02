@@ -29,7 +29,7 @@ def main():
     skipped_frame_count = 0
     
     while True:
-        frame, ret = cap.read()
+        ret, frame = cap.read()
         
         if not ret:
             print("Skipping frame, {}".format(skipped_frame_count))
