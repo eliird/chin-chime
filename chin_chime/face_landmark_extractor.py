@@ -4,7 +4,7 @@ import numpy as np
 from numpy import ndarray
 import mediapipe as mp
 from .constants import MODEL_PATH, MIN_CONFIDENCE
-from typing import Tuple
+from typing import Tuple, Any
 import random
 from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
@@ -30,7 +30,7 @@ options = FaceLandmarkerOptions(
 LANDMARKER = FaceLandmarker.create_from_options(options)
 
 
-def get_mp_detecion(image: Tuple[str, ndarray]):
+def get_mp_detecion(image: Tuple[str, ndarray]) -> Any:
     if isinstance(image, str):
         if not os.path.exists(image):
             raise ValueError("Invalid file path")
@@ -41,7 +41,7 @@ def get_mp_detecion(image: Tuple[str, ndarray]):
     return detection
 
 
-def get_landmarks(image: Tuple[str, ndarray]) -> ndarray:
+def get_landmarks(image: Tuple[str, ndarray]) -> Tuple[ndarray, None]:
     
     face_landmarker_result = get_mp_detecion(image)
     
@@ -114,7 +114,6 @@ def process_video(path: str, emotion: str, save_folder: str,num_imgs=10):
         
     return
 
-
 def process_video_with_augmentations(path: str, emotion: str, save_folder: str,num_imgs=10):
     '''
     TODO Implement a version
@@ -163,6 +162,41 @@ def process_video_with_augmentations(path: str, emotion: str, save_folder: str,n
         
     return
 
+
+def process_video_all_frames(path: str, emotion: str, save_folder: str, num_imgs=10):
+    '''
+
+    '''
+    if not os.path.exists(path):
+        raise ValueError("Invalid Video Path")
+    
+    save_folder = os.path.join(save_folder, emotion)
+    filename = path.split('/')[-1].split('.')[0]
+    
+    cap = cv2.VideoCapture(path)
+            
+    temporal_landmarks = []
+    while True:
+        ret, frame = cap.read()
+        
+        if ret == False:
+            break
+        
+        landmarks = get_landmarks(frame)
+        if landmarks is None:
+            continue
+        temporal_landmarks.append(landmarks)
+        
+        if len(temporal_landmarks) == num_imgs:
+            break
+    
+    for i in range(len(temporal_landmarks), num_imgs):
+        temporal_landmarks.append(temporal_landmarks[-1])
+        
+        
+    save_path = os.path.join(save_folder, 'landmarks_temporal', filename + '.npy') 
+    np.save(save_path, np.array(temporal_landmarks))
+    return
 
 
 def draw_landmarks_on_image(rgb_image, detection_result):
