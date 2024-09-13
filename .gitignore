@@ -1,2 +1,5 @@
 dataset/*
 dataset_augmented/*
+fer2013/*
+model_weights/landmark+wave2vec.pt
+iemocap_processed/*
